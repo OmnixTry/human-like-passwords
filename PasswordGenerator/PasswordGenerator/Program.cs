@@ -9,16 +9,22 @@ namespace PasswordGenerator
 			FileReader fileReader = new FileReader();
 			PasswordGenerator passwordGenerator = new PasswordGenerator(fileReader);
 
-			/*Console.WriteLine(passwordGenerator.GenerateSuperCommonPassword());
+
+
+			string[] pass = passwordGenerator.GenerateManyPasswords(1000000);
+			Console.WriteLine(passwordGenerator.VP);
+			Console.WriteLine(passwordGenerator.NVP);
+			Console.WriteLine(passwordGenerator.HL);
 			Console.WriteLine(passwordGenerator.GenerateRegularCommonPassword());
-			Console.WriteLine(passwordGenerator.NounAdj());
-			Console.WriteLine(passwordGenerator.AdwNoun());*/
-			Console.WriteLine(passwordGenerator.AdwerbAdj());
-			Console.WriteLine(passwordGenerator.AdwerbAdj());
-			Console.WriteLine(passwordGenerator.AdwerbAdj());
-			Console.WriteLine(passwordGenerator.AdwerbAdj());
-			Console.WriteLine(passwordGenerator.AdwerbAdj());
-			Console.WriteLine(passwordGenerator.AdwerbAdj());
+			Console.WriteLine(passwordGenerator.GenerateRegularCommonPassword());
+			Console.WriteLine(passwordGenerator.GenerateRegularCommonPassword());
+			Console.WriteLine(passwordGenerator.GenerateRegularCommonPassword());
+			Console.WriteLine(passwordGenerator.GenerateRegularCommonPassword());
+			/*foreach (var item in pass)
+			{
+				Console.WriteLine(item);
+			}*/
+
 		}
 	}
 }

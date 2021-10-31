@@ -12,6 +12,25 @@ namespace PasswordGenerator
 		private readonly FileReader fileReader;
 		private readonly RandomNumberGenerator random;
 
+		public int VP = 0;
+		public int NVP = 0;
+		public int HL = 0;
+
+		enum HumanLikeType
+		{
+			NounAdj,
+			AdwerbAdj,
+			AdwNoun
+		}
+
+		enum PassType 
+		{ 
+			VeryPopular,
+			RelativelyPopular,
+			HumanLikeRandom
+		}
+
+
 		private Dictionary<char, List<char>> LetterSubstitution = new Dictionary<char, List<char>>()
 		{
 			['a'] = new List<char>(){ '@', '^' },
@@ -43,6 +62,43 @@ namespace PasswordGenerator
 			[' '] = new List<char>() { '-', '_'}
 		};
 
+		public string[] GenerateManyPasswords(int quantity)
+		{
+			PassType[] probabilityArr = new PassType[100];	
+			int veryPopularChance = GetRandomInt(6) + 5;
+			int notSoPopularChance = GetRandomInt(41) + 50;
+			for (int i = 0; i < veryPopularChance; i++)
+			{
+				probabilityArr[i] = PassType.VeryPopular;
+			}
+			for (int i = veryPopularChance; i < veryPopularChance + notSoPopularChance; i++)
+			{
+				probabilityArr[i] = PassType.RelativelyPopular;
+			}
+			for(int i = veryPopularChance + notSoPopularChance; i < probabilityArr.Length; i++)
+			{
+				probabilityArr[i] = PassType.HumanLikeRandom;
+			}
+
+			string[] passwords = new string[quantity];
+			for (int i = 0; i < quantity; i++)
+			{
+				int rand = GetRandomInt(100);
+				switch (probabilityArr[rand])
+				{
+					case PassType.VeryPopular:
+						passwords[i] = GenerateSuperCommonPassword();
+						break;
+					case PassType.RelativelyPopular:
+						passwords[i] = GenerateRegularCommonPassword();
+						break;
+					case PassType.HumanLikeRandom:
+						passwords[i] = GenerateHumanLike();
+						break;
+				}
+			}
+			return passwords;
+		}
 		public PasswordGenerator(FileReader fileReader)
 		{
 			this.fileReader = fileReader;
@@ -51,6 +107,7 @@ namespace PasswordGenerator
 
 		public string GenerateSuperCommonPassword()
 		{
+			VP++;
 			var top = fileReader.ReadTop100();
 			var index = GetRandomInt(top.Length);
 			return top[index];
@@ -58,6 +115,7 @@ namespace PasswordGenerator
 
 		public string GenerateRegularCommonPassword()
 		{
+			NVP++;
 			var top = fileReader.ReadTopMil();
 			var index = GetRandomInt(top.Length);
 			return top[index];
@@ -65,9 +123,19 @@ namespace PasswordGenerator
 
 		public string GenerateHumanLike()
 		{
-			
-
-			return "";
+			HL++;
+			var type = (HumanLikeType)GetRandomInt(3);
+			switch (type)
+			{
+				case HumanLikeType.NounAdj:
+					return NounAdj();
+				case HumanLikeType.AdwerbAdj:
+					return AdwerbAdj();
+				case HumanLikeType.AdwNoun:
+					return AdwNoun();
+				default:
+					return "";
+			}
 		}
 
 		private string TwoWordPass(string first, string second)
@@ -97,16 +165,22 @@ namespace PasswordGenerator
 		private StringBuilder SubstituteSymbols(StringBuilder stringBuilder)
 		{
 			int length = stringBuilder.Length;
-			while(GetRandomInt(length) < length / 4)
+			int numberOfSpecialCharacters = length / 6;
+			for(int i = 0; i < numberOfSpecialCharacters; i++)
 			{
 				int letterNumber;
 				do
 				{
 					letterNumber = GetRandomInt(length);
 				} while (!Char.IsLetter(stringBuilder[letterNumber]));
-				var possibleSubstitutions = LetterSubstitution[stringBuilder[letterNumber]];
-				int subNum = possibleSubstitutions.Count();
-				stringBuilder[letterNumber] = possibleSubstitutions[GetRandomInt(subNum)];
+
+				try
+				{
+					var possibleSubstitutions = LetterSubstitution[Char.ToLower(stringBuilder[letterNumber])];
+					int subNum = possibleSubstitutions.Count();
+					stringBuilder[letterNumber] = possibleSubstitutions[GetRandomInt(subNum)];
+				}
+				catch(Exception e) { }				
 			}
 			return stringBuilder;
 		}
