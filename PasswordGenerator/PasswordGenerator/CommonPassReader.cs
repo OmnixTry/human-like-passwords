@@ -12,10 +12,13 @@ namespace PasswordGenerator
 		const string TopMillion = "topMil.txt";
 		const string Nouns = "nouns.txt";
 		const string Adjectives = "adjectives.txt";
-		
-		private string[] topPasswords;
-		private string[] topNouns;
-		private string[] topAdjectives;
+		const string Adwerbs = "2syllableadverbs.txt";
+
+
+		public readonly string[] topPasswords;
+		public readonly string[] topNouns;
+		public readonly string[] topAdjectives;
+		public readonly string[] topAdwerbs;
 
 
 		public FileReader()
@@ -23,6 +26,7 @@ namespace PasswordGenerator
 			topPasswords = ReadFile(TopMillion);
 			topNouns = ReadFile(Nouns);
 			topAdjectives = ReadFile(Adjectives);
+			topAdwerbs = ReadFile(Adwerbs);
 		}
 
 		public string[] ReadTop100()

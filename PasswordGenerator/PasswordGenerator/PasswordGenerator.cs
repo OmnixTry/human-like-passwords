@@ -39,9 +39,9 @@ namespace PasswordGenerator
 			['w'] = { '#' },
 			['x'] = { '*', '|' },
 			['y'] = { '/' },
-			['z'] = { ']', '$' }
+			['z'] = { ']', '$' },
+			[' '] = { '-', '_'}
 		};
-
 
 		public PasswordGenerator(FileReader fileReader)
 		{
@@ -52,19 +52,104 @@ namespace PasswordGenerator
 		public string GenerateSuperCommonPassword()
 		{
 			var top = fileReader.ReadTop100();
-			return top[GetRandomInt(100)];
+			return top[GetRandomInt(top.Length)];
 		}
 
 		public string GenerateRegularCommonPassword()
 		{
 			var top = fileReader.ReadTopMil();
 			Random rand = new Random(top.Length);
-			return top[GetRandomInt(1000000)];
+			return top[GetRandomInt(top.Length)];
 		}
 
 		public string GenerateHumanLike()
 		{
+			int numOfAdj = fileReader.topAdjectives.Length;
+			string adjective = fileReader.topAdjectives[GetRandomInt(numOfAdj)];
+
 			return "";
+		}
+
+		private string TwoWordPass(string first, string second)
+		{
+			StringBuilder pass = new StringBuilder(first);
+			char? separator = UseSeparator();
+			if (separator.HasValue)
+			{
+				pass.Append(separator.Value);
+			}
+
+			return SubstituteSymbols(pass).ToString();
+
+			char? UseSeparator()
+			{
+				char? separator = null;
+				int rand = GetRandomInt(3);
+				if (rand == 0)
+					separator = '-';
+				else if (rand == 1)
+					separator = '_';
+				return separator;
+			}
+		}
+
+		private StringBuilder SubstituteSymbols(StringBuilder stringBuilder)
+		{
+			int length = stringBuilder.Length;
+			while(GetRandomInt(length) < length / 5)
+			{
+				int letterNumber;
+				do
+				{
+					letterNumber = GetRandomInt(length);
+				} while (!Char.IsLetter(stringBuilder[letterNumber]));
+				var possibleSubstitutions = LetterSubstitution[stringBuilder[letterNumber]];
+				int subNum = possibleSubstitutions.Count();
+				stringBuilder[letterNumber] = possibleSubstitutions[GetRandomInt(subNum)];
+			}
+			return stringBuilder;
+		}
+
+		private string NounAdj()
+		{
+			string noun = RandomNoun();
+			string adj = RandomAdj();
+			return TwoWordPass(noun, adj);
+		}
+
+		private string AdwerbAdj()
+		{
+			string adw = RandomAdwerb();
+			string adj = RandomAdj();
+			return TwoWordPass(adw, adj);
+		}
+
+		private string AdwNoun()
+		{
+			string adw = RandomAdwerb();
+			string noun = RandomNoun();
+			return TwoWordPass(noun, adw);
+		}
+
+		private string RandomNoun()
+		{
+			int num = fileReader.topNouns.Length;
+			string word = fileReader.topNouns[GetRandomInt(num)];
+			return word;
+		}
+
+		private string RandomAdwerb()
+		{
+			int num = fileReader.topAdwerbs.Length;
+			string word = fileReader.topAdwerbs[GetRandomInt(num)];
+			return word;
+		}
+
+		private string RandomAdj()
+		{
+			int numOfAdj = fileReader.topAdjectives.Length;
+			string word = fileReader.topAdjectives[GetRandomInt(numOfAdj)];
+			return word;
 		}
 
 		private int GetRandomInt(int max = 0)
