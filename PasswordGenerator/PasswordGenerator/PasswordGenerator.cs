@@ -14,33 +14,33 @@ namespace PasswordGenerator
 
 		private Dictionary<char, List<char>> LetterSubstitution = new Dictionary<char, List<char>>()
 		{
-			['a'] = { '@', '^' },
-			['b'] = { '&' },
-			['c'] = { '?', '(', '<', '6' },
-			['d'] = { '&', '|' },
-			['e'] = { '6', '~' },
-			['f'] = { '7' },
-			['g'] = { '&', '9' },
-			['h'] = { '4', '|' },
-			['i'] = { '!', '`', '\'', '\\' },
-			['j'] = { '/', '\'' },
-			['k'] = { '/', '<', '{' },
-			['l'] = { '|' },
-			['m'] = { '#' },
-			['n'] = { '^' },
-			['o'] = { '@', '0' },
-			['p'] = { '9' },
-			['q'] = { '2', '6' },
-			['r'] = { '7' },
-			['s'] = { '2', '~', '$' },
-			['t'] = { '7', '-' },
-			['u'] = { '[', ']' },
-			['v'] = { '{', '^' },
-			['w'] = { '#' },
-			['x'] = { '*', '|' },
-			['y'] = { '/' },
-			['z'] = { ']', '$' },
-			[' '] = { '-', '_'}
+			['a'] = new List<char>(){ '@', '^' },
+			['b'] = new List<char>() { '&' },
+			['c'] = new List<char>() { '?', '(', '<', '6' },
+			['d'] = new List<char>() { '&', '|' },
+			['e'] = new List<char>() { '6', '~' },
+			['f'] = new List<char>() { '7' },
+			['g'] = new List<char>() { '&', '9' },
+			['h'] = new List<char>() { '4', '|' },
+			['i'] = new List<char>() { '!', '`', '\'', '\\' },
+			['j'] = new List<char>() { '/', '\'' },
+			['k'] = new List<char>() { '/', '<', '{' },
+			['l'] = new List<char>() { '|' },
+			['m'] = new List<char>() { '#' },
+			['n'] = new List<char>() { '^' },
+			['o'] = new List<char>() { '@', '0' },
+			['p'] = new List<char>() { '9' },
+			['q'] = new List<char>() { '2', '6' },
+			['r'] = new List<char>() { '7' },
+			['s'] = new List<char>() { '2', '~', '$' },
+			['t'] = new List<char>() { '7', '-' },
+			['u'] = new List<char>() { '[', ']' },
+			['v'] = new List<char>() { '{', '^' },
+			['w'] = new List<char>() { '#' },
+			['x'] = new List<char>() { '*', '|' },
+			['y'] = new List<char>() { '/' },
+			['z'] = new List<char>() { ']', '$' },
+			[' '] = new List<char>() { '-', '_'}
 		};
 
 		public PasswordGenerator(FileReader fileReader)
@@ -52,20 +52,20 @@ namespace PasswordGenerator
 		public string GenerateSuperCommonPassword()
 		{
 			var top = fileReader.ReadTop100();
-			return top[GetRandomInt(top.Length)];
+			var index = GetRandomInt(top.Length);
+			return top[index];
 		}
 
 		public string GenerateRegularCommonPassword()
 		{
 			var top = fileReader.ReadTopMil();
-			Random rand = new Random(top.Length);
-			return top[GetRandomInt(top.Length)];
+			var index = GetRandomInt(top.Length);
+			return top[index];
 		}
 
 		public string GenerateHumanLike()
 		{
-			int numOfAdj = fileReader.topAdjectives.Length;
-			string adjective = fileReader.topAdjectives[GetRandomInt(numOfAdj)];
+			
 
 			return "";
 		}
@@ -78,6 +78,7 @@ namespace PasswordGenerator
 			{
 				pass.Append(separator.Value);
 			}
+			pass.Append(second);
 
 			return SubstituteSymbols(pass).ToString();
 
@@ -96,7 +97,7 @@ namespace PasswordGenerator
 		private StringBuilder SubstituteSymbols(StringBuilder stringBuilder)
 		{
 			int length = stringBuilder.Length;
-			while(GetRandomInt(length) < length / 5)
+			while(GetRandomInt(length) < length / 4)
 			{
 				int letterNumber;
 				do
@@ -110,21 +111,21 @@ namespace PasswordGenerator
 			return stringBuilder;
 		}
 
-		private string NounAdj()
+		public string NounAdj()
 		{
 			string noun = RandomNoun();
 			string adj = RandomAdj();
 			return TwoWordPass(noun, adj);
 		}
 
-		private string AdwerbAdj()
+		public string AdwerbAdj()
 		{
 			string adw = RandomAdwerb();
 			string adj = RandomAdj();
 			return TwoWordPass(adw, adj);
 		}
 
-		private string AdwNoun()
+		public string AdwNoun()
 		{
 			string adw = RandomAdwerb();
 			string noun = RandomNoun();
@@ -157,7 +158,7 @@ namespace PasswordGenerator
 			RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 			byte[] rand = new byte[4];
 			rng.GetBytes(rand);
-			int i = BitConverter.ToInt32(rand, 0);
+			int i = Math.Abs(BitConverter.ToInt32(rand, 0));
 
 			int result = i;
 			if (max != 0) {

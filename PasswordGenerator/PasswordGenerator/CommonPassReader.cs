@@ -26,7 +26,12 @@ namespace PasswordGenerator
 			topPasswords = ReadFile(TopMillion);
 			topNouns = ReadFile(Nouns);
 			topAdjectives = ReadFile(Adjectives);
-			topAdwerbs = ReadFile(Adwerbs);
+			topAdwerbs = ReadFile(Adwerbs).Select(x =>
+			{
+				int ind = x.IndexOf('\r');
+				if (ind != -1) return x.Remove(ind);
+				else return x;
+			}).ToArray(); 
 		}
 
 		public string[] ReadTop100()
