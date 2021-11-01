@@ -216,6 +216,7 @@ namespace PasswordGenerator
 						toAdd = AddTrio();
 						break;
 					case ReallyRandomType.NumberOrSymbol:
+						if (GetRandomInt(2) == 1) continue;
 						toAdd = AddSymbol();
 						break;
 				}
@@ -224,7 +225,7 @@ namespace PasswordGenerator
 
 			}
 
-			return stringBuilder.ToString();
+			return LowercaseSome(stringBuilder);
 
 			string AddPair()
 			{
@@ -236,15 +237,26 @@ namespace PasswordGenerator
 				int index = GetRandomInt(fileReader.topTrios.Length);
 				return fileReader.topTrios[index].Letter;
 			}
-			string AddNumber()
-			{ 
-				return GetRandomInt(10).ToString();
-			}
 			string AddSymbol()
 			{
 				const string Symbols = "!@#$%^&*()_+=-{}[]:;\"\'|\\/?><.,0123456789";
 				int index = GetRandomInt(Symbols.Length);
 				return Symbols[index].ToString();
+			}
+
+			string LowercaseSome(StringBuilder sb)
+			{
+				int numberOfLetters = sb.ToString().Where(x => Char.IsLetter(x)).Count();
+				int uppercaseProbability = numberOfLetters / 5;
+				for (int i = 0; i < sb.Length; i++)
+				{
+					if (Char.IsLetter(sb[i]) && GetRandomInt(numberOfLetters) > uppercaseProbability)
+					{
+						sb[i] = Char.ToLower(sb[i]);
+					}
+				}
+
+				return sb.ToString();
 			}
 		}
 

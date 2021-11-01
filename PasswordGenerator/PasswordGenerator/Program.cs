@@ -20,7 +20,9 @@ namespace PasswordGenerator
 			Console.WriteLine(passwordGenerator.ReallyRandom());
 			Console.WriteLine(passwordGenerator.ReallyRandom());
 			Console.WriteLine(passwordGenerator.ReallyRandom());
-			
+			Console.WriteLine(passwordGenerator.ReallyRandom());
+			Console.WriteLine(passwordGenerator.ReallyRandom());
+
 			/*foreach (var item in pass)
 			{
 				Console.WriteLine(item);
