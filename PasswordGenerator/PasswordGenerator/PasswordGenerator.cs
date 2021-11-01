@@ -27,7 +27,15 @@ namespace PasswordGenerator
 		{ 
 			VeryPopular,
 			RelativelyPopular,
-			HumanLikeRandom
+			Random,
+			HumanLikeRandom,
+		}
+
+		enum ReallyRandomType
+		{
+			Pair,
+			Trio,
+			NumberOrSymbol
 		}
 
 
@@ -67,6 +75,7 @@ namespace PasswordGenerator
 			PassType[] probabilityArr = new PassType[100];	
 			int veryPopularChance = GetRandomInt(6) + 5;
 			int notSoPopularChance = GetRandomInt(41) + 50;
+			int random = GetRandomInt(4) + 1;
 			for (int i = 0; i < veryPopularChance; i++)
 			{
 				probabilityArr[i] = PassType.VeryPopular;
@@ -75,7 +84,11 @@ namespace PasswordGenerator
 			{
 				probabilityArr[i] = PassType.RelativelyPopular;
 			}
-			for(int i = veryPopularChance + notSoPopularChance; i < probabilityArr.Length; i++)
+			for(int i = veryPopularChance + notSoPopularChance; i < veryPopularChance + notSoPopularChance + random; i++)
+			{
+				probabilityArr[i] = PassType.Random;
+			}
+			for (int i = veryPopularChance + notSoPopularChance + random; i < probabilityArr.Length; i++)
 			{
 				probabilityArr[i] = PassType.HumanLikeRandom;
 			}
@@ -183,6 +196,56 @@ namespace PasswordGenerator
 				catch(Exception e) { }				
 			}
 			return stringBuilder;
+		}
+
+		public string ReallyRandom()
+		{
+			int length = GetRandomInt(14) + 10;
+			StringBuilder stringBuilder = new StringBuilder();
+
+			while (stringBuilder.Length <= length)
+			{
+				ReallyRandomType operation = (ReallyRandomType)GetRandomInt(4);
+				string toAdd = "";
+				switch (operation)
+				{
+					case ReallyRandomType.Pair:
+						toAdd = AddPair();
+						break;
+					case ReallyRandomType.Trio:
+						toAdd = AddTrio();
+						break;
+					case ReallyRandomType.NumberOrSymbol:
+						toAdd = AddSymbol();
+						break;
+				}
+				stringBuilder.Append(toAdd);
+
+
+			}
+
+			return stringBuilder.ToString();
+
+			string AddPair()
+			{
+				int index = GetRandomInt(fileReader.topPairs.Length);
+				return fileReader.topPairs[index].Letter;
+			}
+			string AddTrio()
+			{
+				int index = GetRandomInt(fileReader.topTrios.Length);
+				return fileReader.topTrios[index].Letter;
+			}
+			string AddNumber()
+			{ 
+				return GetRandomInt(10).ToString();
+			}
+			string AddSymbol()
+			{
+				const string Symbols = "!@#$%^&*()_+=-{}[]:;\"\'|\\/?><.,0123456789";
+				int index = GetRandomInt(Symbols.Length);
+				return Symbols[index].ToString();
+			}
 		}
 
 		public string NounAdj()

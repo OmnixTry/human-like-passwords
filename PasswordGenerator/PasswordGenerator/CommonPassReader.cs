@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PasswordGenerator
@@ -19,6 +20,8 @@ namespace PasswordGenerator
 		public readonly string[] topNouns;
 		public readonly string[] topAdjectives;
 		public readonly string[] topAdwerbs;
+		public readonly PairFrequency[] topPairs;
+		public readonly PairFrequency[] topTrios;
 
 
 		public FileReader()
@@ -31,7 +34,15 @@ namespace PasswordGenerator
 				int ind = x.IndexOf('\r');
 				if (ind != -1) return x.Remove(ind);
 				else return x;
-			}).ToArray(); 
+			}).ToArray();
+
+			const string filename = "letterFrequency.json";
+			string file = File.ReadAllText(filename);
+			topPairs = JsonSerializer.Deserialize<List<PairFrequency>>(file).OrderByDescending(x => x.Chance).Take(300).ToArray();
+
+			const string threeFilename = "letterFrequencyThree.json";
+			file = File.ReadAllText(threeFilename);
+			topTrios = JsonSerializer.Deserialize<List<PairFrequency>>(file).ToArray();
 		}
 
 		public string[] ReadTop100()
@@ -48,5 +59,12 @@ namespace PasswordGenerator
 		{
 			return File.ReadAllText(filename).Split('\n');
 		}
+	}
+
+	class PairFrequency
+	{
+		public string Letter { get; set; }
+
+		public double Chance { get; set; }
 	}
 }

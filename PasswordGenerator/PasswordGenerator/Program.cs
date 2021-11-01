@@ -15,11 +15,12 @@ namespace PasswordGenerator
 			Console.WriteLine(passwordGenerator.VP);
 			Console.WriteLine(passwordGenerator.NVP);
 			Console.WriteLine(passwordGenerator.HL);
-			Console.WriteLine(passwordGenerator.GenerateRegularCommonPassword());
-			Console.WriteLine(passwordGenerator.GenerateRegularCommonPassword());
-			Console.WriteLine(passwordGenerator.GenerateRegularCommonPassword());
-			Console.WriteLine(passwordGenerator.GenerateRegularCommonPassword());
-			Console.WriteLine(passwordGenerator.GenerateRegularCommonPassword());
+			Console.WriteLine(passwordGenerator.ReallyRandom());
+			Console.WriteLine(passwordGenerator.ReallyRandom());
+			Console.WriteLine(passwordGenerator.ReallyRandom());
+			Console.WriteLine(passwordGenerator.ReallyRandom());
+			Console.WriteLine(passwordGenerator.ReallyRandom());
+			
 			/*foreach (var item in pass)
 			{
 				Console.WriteLine(item);
