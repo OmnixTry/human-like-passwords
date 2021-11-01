@@ -108,6 +108,9 @@ namespace PasswordGenerator
 					case PassType.HumanLikeRandom:
 						passwords[i] = GenerateHumanLike();
 						break;
+					case PassType.Random:
+						passwords[i] = ReallyRandom();
+						break;
 				}
 			}
 			return passwords;

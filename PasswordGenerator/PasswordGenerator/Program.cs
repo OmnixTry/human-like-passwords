@@ -11,22 +11,15 @@ namespace PasswordGenerator
 
 
 
-			string[] pass = passwordGenerator.GenerateManyPasswords(1000000);
+			string[] pass = passwordGenerator.GenerateManyPasswords(100);
 			Console.WriteLine(passwordGenerator.VP);
 			Console.WriteLine(passwordGenerator.NVP);
 			Console.WriteLine(passwordGenerator.HL);
-			Console.WriteLine(passwordGenerator.ReallyRandom());
-			Console.WriteLine(passwordGenerator.ReallyRandom());
-			Console.WriteLine(passwordGenerator.ReallyRandom());
-			Console.WriteLine(passwordGenerator.ReallyRandom());
-			Console.WriteLine(passwordGenerator.ReallyRandom());
-			Console.WriteLine(passwordGenerator.ReallyRandom());
-			Console.WriteLine(passwordGenerator.ReallyRandom());
 
-			/*foreach (var item in pass)
+			foreach (var item in pass)
 			{
 				Console.WriteLine(item);
-			}*/
+			}
 
 		}
 	}
