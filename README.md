@@ -1,4 +1,4 @@
-# human-like-passwords
+# Human-like Password Generator
 This repository has an implementation of password generator that created passwords similar to the way humans do.
 
 **Warning! if You found this repository by accident, do not use it's contents to generate passwords for your real accounts. It's purpose it to show how predictable human passwords are.**
@@ -26,3 +26,32 @@ Passwords in this group are built from biggel language blocks - words! To genera
 
 Examples of the passwords:
 `d0ggo_sh@rp` `elbow<heap|y` `$toutly-a7tra(tive`
+
+List Of Possible Substitutions:
+
+- a:   `@ ^`
+- b:   `&`
+- c:   `?, (, <, 6`
+- d:   `&, |`
+- e:   `6, ~`
+- f:   `7 `
+- g:   `&, 9`
+- h:   `4, |`
+- i:   `!, \,`
+- j:   `/, \`
+- k:   `/, <, {`
+- l:   `|`
+- m:   `#`
+- n:   `^`
+- o:   `@, 0`
+- p:   `9 `
+- q:   `2, 6`
+- r:   `7 `
+- s:   `2, ~, $`
+- t:   `7, -`
+- u:   `[, ]:`
+- v:   `{ ^`
+- w:   `#`
+- x:   `*, |`
+- y:   `/`
+- z:   `], $`
