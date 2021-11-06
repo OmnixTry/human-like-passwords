@@ -6,8 +6,10 @@ Especially in this case, where hashes hvae no salt.
 ## Dictionary Atack
 The first and the fastest option is regualr dictionary search. To be more precise I took a list of top million popular passwords and used it as a dictionary. 
 This method revealed 40.6% of the passwords wrom the whole list. And it was the fastest way of searching too, as the number of options is very limited. 
-It is also reasonable to use this method first, because the percentage of these passwords is the biggest from all the others in the list. 
+Dictionary atack turned out to be the fastest from all I tried. It didn't take more than half a minute to crack a top million popular passwords.
+So reasonable to use this method first, because the percentage of these passwords is the biggest from all the others in the list. 
 This will initially narrow down the search, for hashcat which cashes the passwords he successfully cracked.
+
 
 Comand used for this:
 `.\hashcat.exe -m 0 -a 0 md5.csv topMil.txt`
@@ -34,6 +36,8 @@ To demonstrate use of rules in combinator atack here are the commands to crack p
 - `.\hashcat.exe -m 0 -a 1 md5.csv .\combinations\adjectives-delimiters.txt .\dictionaries\nouns.txt -k '$!' >> adj-noun-spec-symbol.txt`
 
 All of the passwords that consist of multiple blocks can be with both capital and lowercase first letter. Listed above method will check the lowercased version. To crack Capitalized paswords add `-j 'c'` and run command again. 
+As for the fime spent this was a little longer than a dictionay search, which is reasonable, because the number of variants is much bigger but it still took about 1 to 3 minutes
+to compute.
 
 ## Hybrid Atack
 Some of the passwords in this set of hashes may have several symbols possible for one position in password. For example passwords that consist of noun, recent date and special symbol. Generating a set of dates for this password is not possible with regular dictionary rules. But making a bruteforce atack is very wasteful. For this reason i cracked passwords like this using Hybrid Atack.
@@ -46,4 +50,6 @@ I used the following command to break these types of passwords:
 - `-1` references a file that contains only the possible special symbols: `@!$`. (The default special symbol alphabet of hashcat is too wide for our purpose).
 - `-2` defines a set of characters suitable for first digit of day, month and year. It is a bit wider than nexessary for the first digit of year and month,  but the amount of custom charactersets is limited, so there had to be a compromise.
 - `-3` `-4` is used for second and third digits of the year respectively. It was possible to narrow down this part as we know a boundary of possible date.
+
+This was a very timeconsuming atack. Without narrowing down the mask option it took more than 15 minutes to compute. (I can't tell for sure. I aborted and then ran it with custom alphabets). However if the mask is reasonable and doesn't give very inappropriate results it is possible to solve task in 3-5 minutes.
 
