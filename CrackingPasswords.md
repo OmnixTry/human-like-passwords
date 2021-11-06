@@ -3,7 +3,7 @@ In this task I've taken hashes from Hmara Vlad and used hashcat to break them.
 I started with md5 hashes as it is supposedly the weakest and the fastest algorythm to crack. 
 Especially in this case, where hashes hvae no salt.
 
-## Dictionary search
+## Dictionary Atack
 The first and the fastest option is regualr dictionary search. To be more precise I took a list of top million popular passwords and used it as a dictionary. 
 This method revealed 40.6% of the passwords wrom the whole list. And it was the fastest way of searching too, as the number of options is very limited. 
 It is also reasonable to use this method first, because the percentage of these passwords is the biggest from all the others in the list. 
@@ -14,7 +14,7 @@ Comand used for this:
 
 Dictionaty search also allows using rules that allow changing elements of the dictionary but in this situation it wasn't necessary. The work of rules will be demonstrated in the Combination search paragraph.
 
-## Combination Search
+## Combinator Atack
 Another instrument supplied by Hashcat is combination search. It uses 2 dictionaries and tries all the possible combinations of words from the first one to the words with the second one.
 It is also possible to add 1 rule to every dictionary (use key `-j` to add rules to every word of the first dictionary. `-k` to do the same with the second one).
 
@@ -32,3 +32,7 @@ To demonstrate use of rules in combinator atack here are the commands to crack p
 - `.\hashcat.exe -m 0 -a 1 md5.csv .\combinations\adjectives-delimiters.txt .\dictionaries\nouns.txt -k '$?' >> adj-noun-spec-symbol.txt`
 - `.\hashcat.exe -m 0 -a 1 md5.csv .\combinations\adjectives-delimiters.txt .\dictionaries\nouns.txt -k '$$' >> adj-noun-spec-symbol.txt`
 - `.\hashcat.exe -m 0 -a 1 md5.csv .\combinations\adjectives-delimiters.txt .\dictionaries\nouns.txt -k '$!' >> adj-noun-spec-symbol.txt`
+
+All of the passwords that consist of multiple blocks can be with both capital and lowercase first letter. Listed above method will check the lowercased version. To crack Capitalized paswords add `-j 'c'` and run command again. 
+
+## Hybrid Atack
