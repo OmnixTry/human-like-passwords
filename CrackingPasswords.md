@@ -36,3 +36,14 @@ To demonstrate use of rules in combinator atack here are the commands to crack p
 All of the passwords that consist of multiple blocks can be with both capital and lowercase first letter. Listed above method will check the lowercased version. To crack Capitalized paswords add `-j 'c'` and run command again. 
 
 ## Hybrid Atack
+Some of the passwords in this set of hashes may have several symbols possible for one position in password. For example passwords that consist of noun, recent date and special symbol. Generating a set of dates for this password is not possible with regular dictionary rules. But making a bruteforce atack is very wasteful. For this reason i cracked passwords like this using Hybrid Atack.
+This type of atack uses dictionary and adds pasks to the and or beginning of dictionaty element. This helps saving time because list of popular nouns can be used as a dictionary, which is faster than bruteforcing.
+
+Time to build the mask. It ocnsists of 8 decimad digits and a special symbol. Generally a mask `?d?d?d?d?d?d?d?d?s` would work. BUT it is too general. It will take a lot of time to try all the combinations (Trust me. I tried). So it's necessary to narrow the selection down. Hashcat supplies users with Alphabets we can use in masks. For example alphabet `d` used in the mask above consists of all the decimal digits. But in some places of date not all the digits are possible. For this situation i used custom alphabets. It's possible to use up to 4 alphabets at the same time in hashcat. They are declared using `-1` `-2` `-3` `-4` commands sublying set of characters after a command. 
+
+I used the following command to break these types of passwords:
+`.\hashcat.exe -m 0 -a 6 -1 .\CustomCharsets\specialCharacters.txt -2 0123 -3 09 -4 012789  md5.csv .\dictionaries\nouns.txt ?2?d?2?d?2?3?4?d?1  >> out-noun-date-symbol.txt`
+- `-1` references a file that contains only the possible special symbols: `@!$`. (The default special symbol alphabet of hashcat is too wide for our purpose).
+- `-2` defines a set of characters suitable for first digit of day, month and year. It is a bit wider than nexessary for the first digit of year and month,  but the amount of custom charactersets is limited, so there had to be a compromise.
+- `-3` `-4` is used for second and third digits of the year respectively. It was possible to narrow down this part as we know a boundary of possible date.
+
