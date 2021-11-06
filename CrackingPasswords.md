@@ -53,3 +53,10 @@ I used the following command to break these types of passwords:
 
 This was a very timeconsuming atack. Without narrowing down the mask option it took more than 15 minutes to compute. (I can't tell for sure. I aborted and then ran it with custom alphabets). However if the mask is reasonable and doesn't give very inappropriate results it is possible to solve task in 3-5 minutes.
 
+## Bute Force
+This method is the most time consuming and the least effective. Hence I didn't rely on it heavily. It worked for several passwords from completely random category, but over an hour of work on my hardware it chacked only about 1 percent of the passwords.
+
+# Results
+Using all methods mentioned above i managed to chack 72.44% of all passwords. The biggest amount was chacked with dictionary atack with top Million most popular passwords (about 40.6%). Those passwords ware the most numerous. Combined with the fastest type atack it was the fastest progress throughout the whole exercise.
+Combinator atack, being pretty similar to dictionary was useful too, but it had a 2 little downsides. Having big dictionaries makes the process a bit more lengthy. And usage of rules in this type of atack is very limited which reduces flexibility.
+The most difficult in use were hybrid and bruteforce atacks. They give a lot of freedom but without a really good mask they don't give any acceptable result. Hybrid atack may be chosen instead of dictionary because masks can generate more options than dictionary rules (when it comes to picking number at the end of a word for example), while taking reasonable time.
